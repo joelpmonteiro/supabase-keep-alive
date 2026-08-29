@@ -12,12 +12,22 @@ cp .env.example .env
 
 Defina no `.env`:
 
-- `SUPABASE_PING_URL`: endpoint que será acessado. Para consultar uma tabela de healthcheck, use algo como `https://seu-projeto.supabase.co/rest/v1/keep_alive?select=id&limit=1`.
-- `SUPABASE_ANON_KEY`: chave pública anon, caso o endpoint exija autenticação.
+- `SUPABASE_URL`: URL base do projeto Supabase.
+- `SUPABASE_TABLE`: nome de uma tabela existente. Se `SUPABASE_PING_URL` não for informado, o programa faz `SELECT * ... LIMIT 1` nessa tabela.
+- `SUPABASE_PING_URL`: endpoint exato que será acessado; quando informado, tem prioridade sobre `SUPABASE_URL` e `SUPABASE_TABLE`.
+- `SUPABASE_ANON_KEY`: chave pública anon para autenticar a consulta e respeitar as políticas RLS.
 - `KEEP_ALIVE_INTERVAL_MINUTES`: intervalo entre os pings em minutos; o padrão é `120` (2 horas).
 - `PORT`: porta HTTP; o padrão é `3000`.
 
-Se `SUPABASE_PING_URL` não for informado, o programa usa `SUPABASE_URL/rest/v1/`.
+Exemplo usando uma tabela existente chamada `clientes`:
+
+```env
+SUPABASE_URL=https://seu-projeto.supabase.co
+SUPABASE_TABLE=clientes
+SUPABASE_ANON_KEY=sua-chave-anon
+```
+
+A URL gerada será `SUPABASE_URL/rest/v1/clientes?select=*&limit=1`. A tabela precisa estar exposta na API e ter uma política RLS que permita `SELECT` para a chave usada.
 
 ## Executar
 

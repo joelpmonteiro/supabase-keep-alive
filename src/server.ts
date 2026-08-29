@@ -7,14 +7,17 @@ const pingTimeoutMs = Number.parseInt(
   10,
 );
 const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/$/, "");
+const supabaseTable = process.env.SUPABASE_TABLE?.trim();
 const pingUrl =
   process.env.SUPABASE_PING_URL ??
-  (supabaseUrl ? `${supabaseUrl}/rest/v1/` : undefined);
+  (supabaseUrl && supabaseTable
+    ? `${supabaseUrl}/rest/v1/${encodeURIComponent(supabaseTable)}?select=*&limit=1`
+    : undefined);
 const anonKey = process.env.SUPABASE_ANON_KEY;
 
 if (!pingUrl) {
   throw new Error(
-    "Configure SUPABASE_PING_URL or SUPABASE_URL before starting the server.",
+    "Configure SUPABASE_PING_URL or SUPABASE_URL and SUPABASE_TABLE before starting the server.",
   );
 }
 
