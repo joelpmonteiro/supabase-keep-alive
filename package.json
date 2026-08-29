@@ -1,0 +1,11 @@
+{
+  "name": "supabase-keep-alive",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/server.ts",
+    "dev": "bun --watch run src/server.ts",
+    "check": "bun build --no-bundle --target=bun --outdir=/tmp/supabase-keep-alive-check src/server.ts"
+  }
+}
